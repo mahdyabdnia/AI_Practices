@@ -116,7 +116,28 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
 
     """Search the shallowest nodes in the search tree first."""
-   
+    fringe_list = util.Queue();
+    closed_list = set();
+    start = (problem.getStartState(), [], 0);
+    fringe_list.push(start);
+    fringe_node = set();
+    fringe_node.add(problem.getStartState());
+    while not fringe_list.isEmpty():
+        (node, path, path_cost) = fringe_list.pop();
+        if problem.isGoalState(node):
+            return path;
+        if not node in closed_list:
+            closed_list.add(node);
+            fringe_node.discard(node);
+            for child_node, child_action, child_cost in problem.getSuccessors(node):
+
+                if not child_node in closed_list:
+                    if not child_node in fringe_node:
+                        new_cost = path_cost + child_cost;
+                        new_path = path + [child_action];
+                        new_state = (child_node, new_path, new_cost);
+                        fringe_list.push(new_state);
+                        fringe_node.add(child_node);
     util.raiseNotDefined()
 
 
