@@ -89,23 +89,29 @@ def depthFirstSearch(problem):
     """
     fringe_list = util.Stack();
     closed_list = set();
-    start = (problem.getStartState(), [], 0);
-    fringe_list.push(start);
+    start_node = {'state':problem.getStartState(),'path':[],'cost':0};
+    fringe_list.push(start_node);
     fringe_node = set();
-    fringe_node.add(start[0]);
+    fringe_node.add(start_node['state']);
+
+
 
     while not fringe_list.isEmpty():
-        (node_state, node_path, node_path_cost) = fringe_list.pop();
+        node={};
+        node = fringe_list.pop();
+        node_state=node['state'];
+        node_path=node['path'];
+        node_cost=node['cost'];
         if problem.isGoalState(node_state):
             return node_path;
         if not node_state in closed_list:
             closed_list.add(node_state);
             fringe_node.discard(node_state);
             for child in problem.getSuccessors(node_state):
-                new_node_cost = node_path_cost + child[2];
+                new_node_cost = node_cost + child[2]
                 new_node_path = node_path + [child[1]];
-                new_state = (child[0], new_node_path, new_node_cost);
-                if not child[0] in closed_list and not child[0] in fringe_node:
+                new_state = {'state':child[0],'path':new_node_path,'cost':new_node_cost};
+                if not new_state['state'] in closed_list and not child[0] in fringe_node:
                     fringe_list.push(new_state);
                     fringe_node.add(child[0]);
 
