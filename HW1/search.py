@@ -88,7 +88,7 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     fringe_list = util.Stack();
-    closed_list = set();
+    closed_list = [];
     st_state=problem.getStartState();
     start_node = (st_state,[],0)# (state,path,cost)
     fringe_list.push(start_node);
@@ -106,7 +106,7 @@ def depthFirstSearch(problem):
         if problem.isGoalState(node[0]):
             return node[1];
         if not node[0] in closed_list:
-            closed_list.add(node[0]);
+            closed_list.append(node[0]);
 
 
 
@@ -132,19 +132,19 @@ def breadthFirstSearch(problem):
 
     """Search the shallowest nodes in the search tree first."""
     fringe_list = util.Queue();
-    closed_list = set();
+    closed_list = [];
     st_state=problem.getStartState()
     start_node = (st_state, [], 0);
     fringe_list.push(start_node);
-    fringe_state = set();
-    fringe_state.add(start_node[0]);
+    fringe_state = [];
+    fringe_state.append(start_node[0]);
 
     while not fringe_list.isEmpty():
         node = fringe_list.pop();
         if problem.isGoalState(node[0]):
             return node[1];
         if not node[0] in closed_list:
-            closed_list.add(node[0]);
+            closed_list.append(node[0]);
 
             for child in problem.getSuccessors(node[0]):
                 new_node_cost = node[2] + child[2];
@@ -155,7 +155,7 @@ def breadthFirstSearch(problem):
 
                 if not child[0] in closed_list and not child[0] in fringe_state:
                     fringe_list.push(new_state);
-                    fringe_state.add(child[0]);
+                    fringe_state.append(child[0]);
 
 
 
@@ -184,7 +184,7 @@ def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     fringe_list = util.PriorityQueue();
 
-    closed_list = set();
+    closed_list = [];
     st_state=problem.getStartState();
     start_node = (st_state, [], 0);
     fringe_list.push(start_node, start_node[2]);
@@ -196,7 +196,7 @@ def uniformCostSearch(problem):
         if problem.isGoalState(node[0]):
             return node[1];
         if not node[0] in closed_list:
-            closed_list.add(node[0]);
+            closed_list.append(node[0]);
 
             for child in problem.getSuccessors(node[0]):
                 new_node_cost = node[2] + child[2];
