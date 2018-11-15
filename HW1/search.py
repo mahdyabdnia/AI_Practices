@@ -92,8 +92,8 @@ def depthFirstSearch(problem):
     st_state=problem.getStartState();
     start_node = (st_state,[],0)# (state,path,cost)
     fringe_list.push(start_node);
-    fringe_state=set();
-    fringe_state.add(st_state);
+    """fringe_state=set();
+    fringe_state.add(st_state);"""
 
 
 
@@ -109,17 +109,19 @@ def depthFirstSearch(problem):
             closed_list.add(node[0]);
 
 
+
             for child in problem.getSuccessors(node[0]):
                 new_node_cost = node[2] + child[2]
                 new_node_path = node[1] + [child[1]];
                 new_state = (child[0],new_node_path,new_node_cost);
 
-
+                """and not new_state[0] in fringe_state:"""  # if  not new_state[0] in [nd[0] for nd in fringe_list[0:]]:
                 if not new_state[0] in closed_list:
-                    #if  not new_state[0] in [nd[0] for nd in fringe_list[0:]]:
-                    if not new_state[0] in fringe_state:
-                        fringe_list.push(new_state);
-                        fringe_state.add(new_state[0]);
+                    fringe_list.push(new_state);
+                    # fringe_state.add(new_state[0]);
+
+
+
 
 
 
@@ -148,13 +150,13 @@ def breadthFirstSearch(problem):
                 new_node_cost = node[2] + child[2];
                 new_node_path = node[1] + [child[1]];
                 new_state = (child[0], new_node_path, new_node_cost);
-                if problem.isGoalState(child[0]):
-                    return new_node_path;
+                """if problem.isGoalState(child[0]):
+                    return new_node_path;""" # dont let pass q2
 
-                if not child[0] in closed_list:
-                    if not child[0] in fringe_state:
-                        fringe_list.push(new_state);
-                        fringe_state.add(child[0]);
+                if not child[0] in closed_list and not child[0] in fringe_state:
+                    fringe_list.push(new_state);
+                    fringe_state.add(child[0]);
+
 
 
 
@@ -184,29 +186,26 @@ def uniformCostSearch(problem):
 
     closed_list = set();
     st_state=problem.getStartState();
-    start_node = {st_state, [], 0};
+    start_node = (st_state, [], 0);
     fringe_list.push(start_node, start_node[2]);
-    fringe_state = set();
-    fringe_state.add(start_node[0]);
+
 
     while not fringe_list.isEmpty():
         node = fringe_list.pop();
 
-        if problem.isGoalState(node_state):
-            return node_path;
-        if not node_state in closed_list:
-            closed_list.add(node_state);
-            fringe_node.discard(node);
-            for child in problem.getSuccessors(node):
-                new_node_cost = node_path_cost + child[2];
-                new_node_path = node_path + [child[1]];
-                new_state = {'state':child_node, 'path':new_node_path, 'cost':new_cost_cost};
-                if not new_state['state'] in closed_list:
-                    if new_state['state'] in fringe_node:
-                        update(new_state,new_cost);
-                    elif not child_node in fringe_node:
-                        fringe_list.push(new_state, new_cost);
-                       # fringe_node.add(child_node);
+        if problem.isGoalState(node[0]):
+            return node[1];
+        if not node[0] in closed_list:
+            closed_list.add(node[0]);
+
+            for child in problem.getSuccessors(node[0]):
+                new_node_cost = node[2] + child[2];
+                new_node_path = node[1] + [child[1]];
+                new_state = (child[0],new_node_path,new_node_cost);
+                if not child[0] in closed_list:
+                    fringe_list.update(new_state,new_node_cost);
+
+
     util.raiseNotDefined()
 
 
@@ -224,7 +223,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     fringe_list = util.PriorityQueue();
     new_cost = 0;
     closed_list = set();
-    start = {'state':problem.getStartState(), 'path':[],'cost': 0};
+    start = [problem.getStartState(), [], 0];
     new_cost = heuristic(start['state'], problem);
     fringe_list.push(start, new_cost);
     fringe_node_list =set();
