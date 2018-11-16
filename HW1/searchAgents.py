@@ -479,13 +479,14 @@ class ClosestDotSearchAgent(SearchAgent):
         gameState.
         """
         # Here are some useful elements of the startState
-        startPosition = gameState.getPacmanPosition()
+        """startPosition = gameState.getPacmanPosition()
         food = gameState.getFood()
-        walls = gameState.getWalls()
+        walls = gameState.getWalls()"""
         problem = AnyFoodSearchProblem(gameState)
+        path=search.aStarSearch(problem)
+        return path
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -519,9 +520,10 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         complete the problem definition.
         """
         x,y = state
+        food_position=self.food
+        return food_position[x][y]
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
 
 def mazeDistance(point1, point2, gameState):
     """
